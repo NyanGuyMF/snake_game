@@ -271,8 +271,11 @@ void game_start(game_t *game)
 	if (is_restart(game)) {
 		werase(game->header);
 		werase(game->game_screen);
+
 		snake_free(game->snake);
 		game->snake = snake_new_centered(_SNAKE_DEFAULT_LEN, game->game_screen);
+		game->score = 0;
+
 		goto restart;
 	}
 }
