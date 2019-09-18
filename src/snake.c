@@ -138,7 +138,6 @@ void snake_print(snake_t *s, WINDOW *w)
 		cur = cur->next;
 	}
 
-	// print head at last to hack overlay
 	cur = s->head;
 	wmove(w, cur->coords.y, cur->coords.x);
 	waddch(w, head);

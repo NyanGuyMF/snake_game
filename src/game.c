@@ -96,14 +96,12 @@ static void eat_food(game_t *game, uint8_t food_index)
 
 static void collision_detection(game_t *game)
 {
-	// snake body collision
 	if (is_snakehead_collide(game->snake)) {
 		game->snake->is_alive = false;
 		++game->death;
 		return;
 	}
 
-	// food collision
 	struct point *head_coord = &game->snake->head->coords;
 	food_t **list = game->food->list;
 	for (uint8_t c = 0; c < game->food->count; c++) {
@@ -138,10 +136,6 @@ static void generate_food(game_t *game)
 
 	uint8_t chance = rand() % 100;
 
-	// (count) — chance
-	// {0} — 25%
-	// (x: (0, 3]) — 5%
-	// (x: (3, 6]) — 1%
 	if (game->food->count > 3) {
 		if (chance >= 1)
 			return;
@@ -274,7 +268,6 @@ void game_start(game_t *game)
 	while (game->snake->is_alive)
 		game_process(game);
 
-	// TODO: query user to press SPACE to restart or ESC to exit
 	if (is_restart(game)) {
 		werase(game->header);
 		werase(game->game_screen);
