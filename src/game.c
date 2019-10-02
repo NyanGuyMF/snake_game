@@ -118,7 +118,7 @@ static bool is_point_collide(game_t *game, struct point *point)
 	snake_body_t *cur = game->snake->head;
 	while (cur) {
 		if (point_equals(&cur->coords, point))
-			return false;
+			return true;
 		cur = cur->next;
 	}
 
