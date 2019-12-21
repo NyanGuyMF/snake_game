@@ -59,6 +59,16 @@ void fl_rem(foodlist_t *fl, uint8_t index)
 	--fl->count;
 }
 
+void fl_clear(foodlist_t *fl, WINDOW *win)
+{
+	while (fl->count) {
+		food_t *food = fl->list[--fl->count];
+		wmove(win, food->y, food->x);
+		waddch(win, ' ');
+		free(food);
+	}
+}
+
 void fl_print(foodlist_t *fl, WINDOW *w)
 {
 	for (uint8_t c = 0; c < fl->count; c++) {

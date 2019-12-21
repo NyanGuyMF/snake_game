@@ -25,4 +25,6 @@ void fl_free(foodlist_t *list);
 bool fl_add(foodlist_t *fl, struct point coords);
 void fl_rem(foodlist_t *fl, uint8_t index);
 
+void fl_clear(foodlist_t *fl, WINDOW *window);
+
 void fl_print(foodlist_t *fl, WINDOW *window);
