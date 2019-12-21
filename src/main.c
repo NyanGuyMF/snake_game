@@ -1,4 +1,4 @@
-#include <curses.h>
+#include <ncurses.h>
 #include "snake.h"
 #include "game.h"
 
@@ -19,6 +19,7 @@ int main(void)
 	noecho();
 	cbreak();
 	refresh();
+	keypad(stdscr, TRUE);
 
 	game_t *game = game_new(header, game_screen);
 	game_start(game);
