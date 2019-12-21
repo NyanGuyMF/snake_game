@@ -1,15 +1,7 @@
-#ifndef __NCURSES_H
-	#include <ncurses.h>
-#endif
-#ifndef _STDIO_H
-	#include <stdio.h>
-#endif
-#ifndef _STDLIB_H
-	#include <stdlib.h>
-#endif
-#ifndef _STDINT_H
-	#include <stdint.h>
-#endif
+#include <ncurses.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 #define _SNAKE_DEFAULT_LEN 3
 #define _SNAKE_GROW_LEN 2
