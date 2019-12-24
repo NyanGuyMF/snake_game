@@ -11,7 +11,7 @@ int main(void)
 {
 	initscr();
 	curs_set(0);
-	srand(time((void*)0x0));
+	srand(time(NULL));
 
 	header = newwin(HEADER_LINES, COLS, 0, 0);
 	game_screen = newwin(LINES - HEADER_LINES - 1, COLS - 1, HEADER_LINES + 1, 0);

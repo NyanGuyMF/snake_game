@@ -1,18 +1,13 @@
+#ifndef _GAME_H
+#define _GAME_H 1
+
 #ifndef _POSIX_C_SOURCE
 	#define _POSIX_C_SOURCE 199309L
 #endif
-#ifndef _SNAKE_H
-	#include "snake.h"
-#endif
-#ifndef _FOODLIST_H
-	#include "foodlist.h"
-#endif
-#ifndef _STDBOOL_H
-	#include <stdbool.h>
-#endif
-#ifndef _TIME_H
-	#include <time.h>
-#endif
+#include <stdbool.h>
+#include <time.h>
+#include "snake.h"
+#include "foodlist.h"
 
 #define _ESC 27
 #define _SPACE 32
@@ -35,3 +30,5 @@ game_t *game_new(WINDOW *header, WINDOW *game_screen);
 
 void game_start(game_t *game);
 void game_end(game_t *game);
+
+#endif

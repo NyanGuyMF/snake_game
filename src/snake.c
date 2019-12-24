@@ -3,8 +3,8 @@
 snake_t *snake_new(uint16_t len, uint16_t head_x, uint16_t head_y)
 {
 	snake_t *snake = malloc(sizeof(snake_t));
-	snake->head = (void*)0x0;
-	snake->tail = (void*)0x0;
+	snake->head = NULL;
+	snake->tail = NULL;
 	snake->is_alive = 1;
 	snake->direction = LEFT;
 	struct point head_pos = {.x=head_x, .y=head_y};
@@ -42,7 +42,7 @@ void snake_push_back(snake_t *snake, struct point coords)
 {
 	snake_body_t *new_tail = malloc(sizeof(snake_body_t));
 	new_tail->coords = coords;
-	new_tail->next = (void*)0x0;
+	new_tail->next = NULL;
 
 	if (!snake->head) {
 		snake->head = new_tail;
@@ -74,7 +74,7 @@ void snake_pop_back(snake_t *s)
 		before_tail = before_tail->next;
 
 	free(before_tail->next);
-	before_tail->next = (void*)0x0;
+	before_tail->next = NULL;
 	s->tail = before_tail;
 }
 

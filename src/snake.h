@@ -1,3 +1,6 @@
+#ifndef _SNAKE_H
+#define _SNAKE_H 1
+
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,3 +49,5 @@ void snake_pop_back(snake_t *snake);
 void snake_move(snake_t *snake, WINDOW *window);
 void snake_grow(snake_t *snake, uint8_t new_elements);
 void snake_print(snake_t *snake, WINDOW *window);
+
+#endif

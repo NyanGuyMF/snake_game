@@ -1,12 +1,10 @@
-#ifndef _SNAKE_H
-	#include "snake.h"
-#endif
-#ifndef _STRING_H
-	#include <string.h>
-#endif
-#ifndef __NCURSES_H
-	#include <ncurses.h>
-#endif
+#ifndef _FOODLIST_H
+#define _FOODLIST_H 1
+
+#include "snake.h"
+#include <string.h>
+#include <ncurses.h>
+#include <math.h>	/** abs(1) */
 
 #define _FOODLIST_H 1
 #define _FOOD_MAX 6
@@ -28,3 +26,5 @@ void fl_rem(foodlist_t *fl, uint8_t index);
 void fl_clear(foodlist_t *fl, WINDOW *window);
 
 void fl_print(foodlist_t *fl, WINDOW *window);
+
+#endif

@@ -32,7 +32,7 @@ static void pause(WINDOW *header)
 		wmove(header, 1, header->_maxx - sizeof("  |"));
 		waddch(header, c);
 		wrefresh(header);
-		nanosleep(&sleep_for, (void*)0x0);
+		nanosleep(&sleep_for, NULL);
 	}
 
 	wmove(header, 1, header->_maxx - sizeof("  |"));
@@ -94,6 +94,7 @@ static void eat_food(game_t *game, uint8_t food_index)
 {
 	food_t *food = game->food->list[food_index];
 	wmove(game->game_screen, food->y, food->x);
+	waddch(game->game_screen, ' ');
 	fl_rem(game->food, food_index);
 	snake_grow(game->snake, _SNAKE_GROW_LEN);
 }
@@ -167,7 +168,7 @@ static void delay(direction_t *direct)
 	else
 		sleep_for.tv_nsec = _DELAY_HORIZON;
 
-	nanosleep(&sleep_for, (void*)0x0);
+	nanosleep(&sleep_for, NULL);
 }
 
 static void update_score(game_t *game)
