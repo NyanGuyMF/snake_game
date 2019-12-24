@@ -41,15 +41,6 @@ bool fl_add(foodlist_t *fl, struct point coords)
 	return true;
 }
 
-static void fl_shift_left(foodlist_t *food_list, uint8_t dest_pos, uint8_t food_to_shift)
-{
-	food_t **dest = food_list->list+dest_pos;
-	food_t **src = dest+food_to_shift;
-	size_t nfood = (food_list->count - (dest_pos + food_to_shift));
-
-	memmove(dest, src, nfood * sizeof(*food_list->list));
-}
-
 void fl_rem(foodlist_t *fl, uint8_t index)
 {
 	if (index >= fl->count)
@@ -57,10 +48,8 @@ void fl_rem(foodlist_t *fl, uint8_t index)
 
 	free(fl->list[index]);
 
-	// 1 means we removed one element,
-	// so we need to shift only by one element
-	fl_shift_left(fl, index, 1);
-
+	if (fl->count > 1)
+		fl->list[index] = fl->list[fl->count-1];
 	--fl->count;
 }
 
