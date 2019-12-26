@@ -92,7 +92,7 @@ static bool is_snakehead_collide(snake_t *snake)
 
 static void eat_food(game_t *game, uint8_t food_index)
 {
-	food_t *food = game->food->list[food_index];
+	food_t *food = game->food->food[food_index];
 	wmove(game->game_screen, food->y, food->x);
 	waddch(game->game_screen, ' ');
 	fl_rem(game->food, food_index);
@@ -108,8 +108,8 @@ static void collision_detection(game_t *game)
 	}
 
 	struct point *head_coord = &game->snake->head->coords;
-	food_t **list = game->food->list;
-	for (uint8_t c = 0; c < game->food->count; c++) {
+	food_t **list = game->food->food;
+	for (uint8_t c = 0; c < game->food->size; c++) {
 		if (point_equals(list[c], head_coord)) {
 			eat_food(game, c);
 			++game->score;
@@ -127,8 +127,8 @@ static bool is_point_collide(game_t *game, struct point *point)
 		cur = cur->next;
 	}
 
-	for (uint8_t c = 0; c < game->food->count; c++)
-		if (point_equals(game->food->list[c], point))
+	for (uint8_t c = 0; c < game->food->size; c++)
+		if (point_equals(game->food->food[c], point))
 			return true;
 
 	return false;
@@ -136,15 +136,15 @@ static bool is_point_collide(game_t *game, struct point *point)
 
 static void generate_food(game_t *game)
 {
-	if (game->food->count >= _FOOD_MAX)
+	if (game->food->size >= _FOOD_MAX)
 		return;
 
 	uint8_t chance = rand() % 100;
 
-	if (game->food->count > 3) {
+	if (game->food->size > 3) {
 		if (chance >= 1)
 			return;
-	} else if (game->food->count > 0) {
+	} else if (game->food->size > 0) {
 		if (chance >= 5)
 			return;
 	} else {

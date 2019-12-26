@@ -14,49 +14,49 @@ foodlist_t *fl_new(uint8_t max)
 {
 	foodlist_t *fl = malloc(sizeof(foodlist_t));
 
-	fl->count = 0;
-	fl->max = max;
-	fl->list = calloc(fl->max, sizeof(*fl->list));
+	fl->size = 0;
+	fl->cap = max;
+	fl->food = calloc(fl->cap, sizeof(*fl->food));
 
 	return fl;
 }
 
 void fl_free(foodlist_t *fl)
 {
-	for (uint8_t c = 0; c < fl->count;)
-		free(fl->list[c++]);
+	for (uint8_t c = 0; c < fl->size;)
+		free(fl->food[c++]);
 
-	free(fl->list);
+	free(fl->food);
 	free(fl);
 }
 
 bool fl_add(foodlist_t *fl, struct point coords)
 {
-	if (fl->count == fl->max)
+	if (fl->size == fl->cap)
 		return false;
 
 	food_t *food = food_new(&coords);
 
-	fl->list[fl->count++] = food;
+	fl->food[fl->size++] = food;
 	return true;
 }
 
 void fl_rem(foodlist_t *fl, uint8_t index)
 {
-	if (index >= fl->count)
+	if (index >= fl->size)
 		return;
 
-	free(fl->list[index]);
+	free(fl->food[index]);
 
-	if (fl->count > 1)
-		fl->list[index] = fl->list[fl->count-1];
-	--fl->count;
+	if (fl->size > 1)
+		fl->food[index] = fl->food[fl->size-1];
+	--fl->size;
 }
 
 void fl_clear(foodlist_t *fl, WINDOW *win)
 {
-	while (fl->count) {
-		food_t *food = fl->list[--fl->count];
+	while (fl->size) {
+		food_t *food = fl->food[--fl->size];
 		wmove(win, food->y, food->x);
 		waddch(win, ' ');
 		free(food);
@@ -65,8 +65,8 @@ void fl_clear(foodlist_t *fl, WINDOW *win)
 
 void fl_print(foodlist_t *fl, WINDOW *w)
 {
-	for (uint8_t c = 0; c < fl->count; c++) {
-		wmove(w, fl->list[c]->y, fl->list[c]->x);
+	for (uint8_t c = 0; c < fl->size; c++) {
+		wmove(w, fl->food[c]->y, fl->food[c]->x);
 		waddch(w, '%');
 	}
 }

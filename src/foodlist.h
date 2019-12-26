@@ -12,9 +12,9 @@
 typedef struct point food_t;
 
 typedef struct {
-	food_t **list;
-	uint8_t count;
-	uint8_t max;
+	food_t **food;
+	uint8_t size;
+	uint8_t cap;
 } foodlist_t;
 
 foodlist_t *fl_new(uint8_t max);
