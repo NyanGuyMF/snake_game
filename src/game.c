@@ -2,7 +2,7 @@
 
 static struct timespec sleep_for;
 
-static char inpause[] = "Pause. Press P to unpase. ";
+static char inpause[] = "Press any key to continue ";
 static char on_unpause[] = "Continue in..   ";
 /** sizeof returns string size with \0, but we need strlen for compile time. */
 static size_t inpause_len = sizeof(inpause) - 1;
@@ -24,47 +24,51 @@ static char *uint_to_str(uint32_t num)
 	return str;
 }
 
-static void pause(WINDOW *header)
+static void show_pause_status(WINDOW *win, char *status, size_t status_len)
 {
 	// show user status message
-	size_t offset = header->_maxx - inpause_len;
-	wmove(header, 1, offset);
-	waddstr(header, inpause);
-	wrefresh(header);
-	// wait user to press P
-	nodelay(stdscr, false);
-	getch();
+	size_t offset = win->_maxx - status_len;
+	wmove(win, 1, offset);
+	waddstr(win, status);
+	wrefresh(win);
+}
 
-	// clear pause status message
-	wmove(header, 1, offset);
-	/* -1 because we don't need to remove | char */
-	for (size_t cursor = 0; cursor < inpause_len - 1; cursor++)
-		waddch(header, ' ');
-	wrefresh(header);
+static void clear_pause_status(WINDOW *win, char *status, size_t status_len)
+{
+	size_t offset = win->_maxx - status_len;
+	wmove(win, 1, offset);
+	for (size_t cursor = 0; cursor < status_len; cursor++)
+		waddch(win, ' ');
+	wrefresh(win);
+}
 
-	offset = header->_maxx - on_unpause_len;
-	wmove(header, 1, offset);
-	waddstr(header, on_unpause);
-	wrefresh(header);
-	static char sec_offset[] = "|";
-	size_t sec_offset_len = header->_maxx - sizeof(sec_offset);
+/** ONLY FOR '0'..'9' SECONDS */
+static void wait_nsec(WINDOW *win, char n)
+{
+	/* offset for " |" */
+	size_t sec_offset_len = win->_maxx - 2;
 	sleep_for.tv_nsec = 0;
 	sleep_for.tv_sec = _PAUSE_COUNTER_DELAY;
-	for (char c = '3'; c > '0'; c--) {
-		wmove(header, 1, sec_offset_len);
-		waddch(header, c);
-		wrefresh(header);
+	while (n > '0') {
+		wmove(win, 1, sec_offset_len);
+		waddch(win, n--);
+		wrefresh(win);
 		nanosleep(&sleep_for, NULL);
 	}
-
-	// clear pause status message
-	wmove(header, 1, offset);
-	/* -1 because we don't need to remove | char */
-	for (size_t cursor = 0; cursor < on_unpause_len - 1; cursor++)
-		waddch(header, ' ');
-	wrefresh(header);
-
 	sleep_for.tv_sec = 0;
+}
+
+static void pause(WINDOW *header)
+{
+	show_pause_status(header, inpause, inpause_len);
+}
+
+static void unpause(WINDOW *header)
+{
+	clear_pause_status(header, inpause, inpause_len);
+	show_pause_status(header, on_unpause, on_unpause_len);
+	wait_nsec(header, '3');
+	clear_pause_status(header, on_unpause, on_unpause_len);
 }
 
 static void process_user_input(game_t *game)
@@ -95,6 +99,10 @@ static void process_user_input(game_t *game)
 	case 'P':
 	case 'p':
 		pause(game->header);
+		// wait user to press any key
+		nodelay(stdscr, false);
+		getch();
+		unpause(game->header);
 		break;
 	}
 }
