@@ -90,7 +90,7 @@ static void process_user_input(game_t *game)
 	case 'D':
 	case 'd':
 	case KEY_RIGHT:
-		snake_change_direction(game->snake, LEFT);
+		snake_change_direction(game->snake, RIGHT);
 		break;
 	case 'P':
 	case 'p':
