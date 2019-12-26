@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>	/* strlen(1) */
+#include <math.h>	/* abs(1) */
 
 #define _SNAKE_DEFAULT_LEN 3
 #define _SNAKE_GROW_LEN 2
@@ -47,6 +48,7 @@ void snake_push_back(snake_t *snake, struct point body_coords);
 void snake_push_front(snake_t *snake, struct point coords);
 void snake_pop_back(snake_t *snake);
 
+void snake_change_direction(snake_t *snake, direction_t new_direction);
 void snake_move(snake_t *snake, WINDOW *window);
 void snake_grow(snake_t *snake, uint8_t new_elements);
 void snake_print(snake_t *snake, WINDOW *window);

@@ -78,6 +78,13 @@ void snake_pop_back(snake_t *s)
 	s->tail = before_tail;
 }
 
+void snake_change_direction(snake_t *snake, direction_t new_direction)
+{
+	/* LEFT <-> RIGHT, or UP <-> DOWN */
+	if (abs((int) new_direction - (int) snake->direction) != 2)
+		snake->direction = new_direction;
+}
+
 void snake_move(snake_t *s, WINDOW *w)
 {
 	// remove previous tail

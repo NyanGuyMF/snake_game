@@ -75,26 +75,22 @@ static void process_user_input(game_t *game)
 	case 'W':
 	case 'w':
 	case KEY_UP:
-		if (game->snake->direction != DOWN)
-			game->snake->direction = UP;
+		snake_change_direction(game->snake, UP);
 		break;
 	case 'S':
 	case 's':
 	case KEY_DOWN:
-		if (game->snake->direction != UP)
-			game->snake->direction = DOWN;
+		snake_change_direction(game->snake, DOWN);
 		break;
 	case 'A':
 	case 'a':
 	case KEY_LEFT:
-		if (game->snake->direction != RIGHT)
-			game->snake->direction = LEFT;
+		snake_change_direction(game->snake, LEFT);
 		break;
 	case 'D':
 	case 'd':
 	case KEY_RIGHT:
-		if (game->snake->direction != LEFT)
-			game->snake->direction = RIGHT;
+		snake_change_direction(game->snake, LEFT);
 		break;
 	case 'P':
 	case 'p':
