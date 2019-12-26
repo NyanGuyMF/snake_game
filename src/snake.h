@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>	/* strlen(1) */
 
 #define _SNAKE_DEFAULT_LEN 3
 #define _SNAKE_GROW_LEN 2

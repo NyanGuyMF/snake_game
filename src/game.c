@@ -2,6 +2,12 @@
 
 static struct timespec sleep_for;
 
+static char inpause[] = "Pause. Press P to unpase. ";
+static char on_unpause[] = "Continue in..   ";
+/** sizeof returns string size with \0, but we need strlen for compile time. */
+static size_t inpause_len = sizeof(inpause) - 1;
+static size_t on_unpause_len = sizeof(on_unpause) - 1;
+
 static char *uint_to_str(uint32_t num)
 {
 	char *str = calloc(11, sizeof(char));
@@ -20,24 +26,44 @@ static char *uint_to_str(uint32_t num)
 
 static void pause(WINDOW *header)
 {
-	wmove(header, 1, header->_maxx - sizeof("  |"));
-	waddch(header, 'P');
+	// show user status message
+	size_t offset = header->_maxx - inpause_len;
+	wmove(header, 1, offset);
+	waddstr(header, inpause);
 	wrefresh(header);
+	// wait user to press P
 	nodelay(stdscr, false);
 	getch();
 
+	// clear pause status message
+	wmove(header, 1, offset);
+	/* -1 because we don't need to remove | char */
+	for (size_t cursor = 0; cursor < inpause_len - 1; cursor++)
+		waddch(header, ' ');
+	wrefresh(header);
+
+	offset = header->_maxx - on_unpause_len;
+	wmove(header, 1, offset);
+	waddstr(header, on_unpause);
+	wrefresh(header);
+	static char sec_offset[] = "|";
+	size_t sec_offset_len = header->_maxx - sizeof(sec_offset);
 	sleep_for.tv_nsec = 0;
 	sleep_for.tv_sec = _PAUSE_COUNTER_DELAY;
 	for (char c = '3'; c > '0'; c--) {
-		wmove(header, 1, header->_maxx - sizeof("  |"));
+		wmove(header, 1, sec_offset_len);
 		waddch(header, c);
 		wrefresh(header);
 		nanosleep(&sleep_for, NULL);
 	}
 
-	wmove(header, 1, header->_maxx - sizeof("  |"));
-	waddch(header, ' ');
+	// clear pause status message
+	wmove(header, 1, offset);
+	/* -1 because we don't need to remove | char */
+	for (size_t cursor = 0; cursor < on_unpause_len - 1; cursor++)
+		waddch(header, ' ');
 	wrefresh(header);
+
 	sleep_for.tv_sec = 0;
 }
 
