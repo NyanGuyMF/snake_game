@@ -55,8 +55,8 @@ void fl_rem(foodlist_t *fl, uint8_t index)
 
 void fl_clear(foodlist_t *fl, WINDOW *win)
 {
-	while (fl->size--) {
-		food_t *food = fl->food[fl->size];
+	while (fl->size) {
+		food_t *food = fl->food[--fl->size];
 		wmove(win, food->y, food->x);
 		waddch(win, ' ');
 		free(food);
