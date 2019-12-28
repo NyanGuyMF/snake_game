@@ -23,8 +23,8 @@ foodlist_t *fl_new(uint8_t max)
 
 void fl_free(foodlist_t *fl)
 {
-	for (uint8_t c = 0; c < fl->size;)
-		free(fl->food[c++]);
+	for (uint8_t c = 0; c < fl->size; c++)
+		free(fl->food[c]);
 
 	free(fl->food);
 	free(fl);
@@ -55,8 +55,8 @@ void fl_rem(foodlist_t *fl, uint8_t index)
 
 void fl_clear(foodlist_t *fl, WINDOW *win)
 {
-	while (fl->size) {
-		food_t *food = fl->food[--fl->size];
+	while (fl->size--) {
+		food_t *food = fl->food[fl->size];
 		wmove(win, food->y, food->x);
 		waddch(win, ' ');
 		free(food);
