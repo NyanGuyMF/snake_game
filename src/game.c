@@ -129,11 +129,18 @@ static void eat_food(game_t *game, uint8_t food_index)
 	snake_grow(game->snake, _SNAKE_GROW_LEN);
 }
 
+static void kill_snake(game_t *game)
+{
+	if (game->snake->is_alive) {
+		game->snake->is_alive = false;
+		++game->death;
+	}
+}
+
 static void collision_detection(game_t *game)
 {
 	if (is_snakehead_collide(game->snake)) {
-		game->snake->is_alive = false;
-		++game->death;
+		kill_snake(game);
 		return;
 	}
 
